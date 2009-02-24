@@ -5,10 +5,18 @@ ENABLE_SSO = true # 是否启用sso
 
 # cas client 配置, 如果sso不启动就关闭
 if ENABLE_SSO
-  SynchronizeSession::SESSION_UPDATE_INTERVAL = 10 # /10秒更新代码
+  require 'synchronize_session'  
   EXCEPT_ACTIONS = ['back'] # 需要跳过验证的 action
+  SynchronizeSession::SESSION_UPDATE_INTERVAL = 10 # /10秒更新代码
+  mode = 'local'
   
-  case mode = 'local'  # 3 mode local, test, production
+  # add to global before_filter
+  ActionController::Base.class_eval do
+    include SynchronizeSession
+    before_filter :synchronize_session, :except => EXCEPT_ACTIONS
+  end
+  
+  case mode  # 3 mode local, test, production
   when 'local'
     CAS_URL = "http://localhost:443"
     USERSYSTEM_URL = "http://localhost:3000"
