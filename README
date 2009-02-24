@@ -16,3 +16,8 @@ Example
 =======
 # 获得用户信息
 UsersystemApiHelper.get_user(:guid)
+
+
+
+需要将initializers目录拷贝到 config/initializers下。
+配置 usersystem_api_config.rb

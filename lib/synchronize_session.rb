@@ -18,9 +18,10 @@ module SynchronizeSession
     if session[:cas_extra_attributes] != nil
       # 当cas用的数据库和 usersystem 用的数据库不一样的时候，会出现问题
       # 因为 find_by_id 返回 nil
-      session[USER_SESSION_KEY] = User.find_by_id(session[:cas_extra_attributes]['id'])
+      session[:user] = set_user_session
+      raise "Can not find user by id #{session[:cas_extra_attributes]['id']}, cas and user system must use same database." unless session[:user]
     else
-      session[USER_SESSION_KEY] = nil
+      session[:user] = nil
     end
   end
 end
