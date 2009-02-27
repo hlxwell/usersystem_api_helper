@@ -5,7 +5,8 @@ module SynchronizeSession
     last_update = session[:previous_redirect_to_cas] ||= Time.now
 
     # 三个条件到了才去更新：1 没有ticket 2 没有 login=false 3 更新时间到 4 是get操作, post put delete会有问题。
-    if request.get? and params[:ticket].blank? and params[:login].blank? and (Time.now - last_update) > SESSION_UPDATE_INTERVAL
+    # TODO 有个问题就是 当用户有了 ticket or login=false 的时候刷新，那么用户就不会去取登陆信息
+    if request.get? and (Time.now - last_update) > SESSION_UPDATE_INTERVAL and params[:ticket].blank? and params[:login].blank?
       session[:cas_user]             = nil
       session[:cas_extra_attributes] = nil
       session[:casfilteruser]        = nil

@@ -1,34 +1,37 @@
 API_USER_ID   = '1'
 API_USER_KEY  = '149825cf0a6287b07ced1509472bf202'
 ENABLE_SSO = true # 是否启用sso
+mode = 'local'
 
+## url地址设置
+case mode  # 3 mode local, test, production
+when 'local'
+  CAS_URL = "http://localhost:443"
+  USERSYSTEM_URL = "http://localhost:3000"
+when 'alpha'
+  CAS_URL = "http://cas.alpha.ali-dev.com"
+  USERSYSTEM_URL = "http://login.alpha.ali-dev.com"
+when 'beta'
+  CAS_URL = "http://cas.beta.ali-dev.com"
+  USERSYSTEM_URL = "http://login.beta.ali-dev.com"
+when 'production'
+  CAS_URL = "http://cas.alixueyuan.net"
+  USERSYSTEM_URL = "http://login.alixueyuan.net"
+else
+  CAS_URL = "http://localhost:443"
+  USERSYSTEM_URL = "http://localhost:3000"
+end
 
 # cas client 配置, 如果sso不启动就关闭
 if ENABLE_SSO
   require 'synchronize_session'  
   EXCEPT_ACTIONS = ['back'] # 需要跳过验证的 action
   SynchronizeSession::SESSION_UPDATE_INTERVAL = 10 # /10秒更新代码
-  mode = 'local'
   
   # add to global before_filter
   ActionController::Base.class_eval do
     include SynchronizeSession
     before_filter :synchronize_session, :except => EXCEPT_ACTIONS
-  end
-  
-  case mode  # 3 mode local, test, production
-  when 'local'
-    CAS_URL = "http://localhost:443"
-    USERSYSTEM_URL = "http://localhost:3000"
-  when 'test'
-    CAS_URL = "http://cas.facebook2.cn"
-    USERSYSTEM_URL = "http://login.facebook2.cn"
-  when 'production'
-    CAS_URL = "http://cas.alixueyuan.net"
-    USERSYSTEM_URL = "http://login.alixueyuan.net"
-  else
-    CAS_URL = "http://localhost:443"
-    USERSYSTEM_URL = "http://localhost:3000"
   end
 
   cas_logger = CASClient::Logger.new(RAILS_ROOT+'/log/cas.log')

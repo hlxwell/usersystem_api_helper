@@ -5,7 +5,7 @@ class UsersystemApiHelper
   require 'json'
   
   def self.get_user(guid)
-    return nil unless guid
+    raise 'no guid for geting user' unless guid
     
     timestamp = Time.now.strftime('%Y%m%d%H%M%S')
     com_key = MD5.new(API_USER_KEY + timestamp)
