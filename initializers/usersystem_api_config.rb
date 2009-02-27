@@ -1,7 +1,9 @@
-API_USER_ID   = '1'
-API_USER_KEY  = '149825cf0a6287b07ced1509472bf202'
+API_USER_ID   = ''
+API_USER_KEY  = ''
 ENABLE_SSO = true # 是否启用sso
 mode = 'local'
+
+raise 'please set the API_USER_ID and API_USER_KEY' if API_USER_ID.blank? or API_USER_KEY.blank?
 
 ## url地址设置
 case mode  # 3 mode local, test, production
@@ -45,7 +47,8 @@ if ENABLE_SSO
   
   # 这个东西需要根据不同的系统去修改，需要能够重用。
   def set_user_session
-    User.find_by_id(session[:cas_extra_attributes]['id']) # 用户系统
+    raise 'not implement set_user_session, please check config/initializers/usersystem_api_config.rb'
+    #User.find_by_id(session[:cas_extra_attributes]['id']) # 用户系统
     #UsersystemApiHelper.get_user(session[:cas_extra_attributes]['guid']) # 课程系统
   end
 end
