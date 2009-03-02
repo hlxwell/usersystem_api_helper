@@ -21,3 +21,6 @@ UsersystemApiHelper.get_user(:guid)
 
 需要将initializers目录拷贝到 config/initializers下。
 配置 usersystem_api_config.rb
+
+如果有些页面出现问题跳过同步session的filter的就可以了。
+skip_before_filter :synchronize_session
