@@ -18,8 +18,6 @@ if ENABLE_SSO
     #User.find_by_id(session[:cas_extra_attributes]['id']) # 用户系统
     #UsersystemApiHelper.get_user(session[:cas_extra_attributes]['guid']) # 课程系统
   end
-  
-  set_user_session
 end
 #####################################################################################
 
