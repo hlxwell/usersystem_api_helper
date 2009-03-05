@@ -4,19 +4,20 @@ UsersystemApiHelper
 
 Note
 =======
-打开 config/enviroment.rb
+把initializers拷贝到项目config目录下
+打开 config/initializers/usersystem_api_config.rb进行配置
 
 # 修改下面两个常量后再使用
 API_USER_ID = ''
 API_USER_KEY = ''
-
-Example
-=======
-# 获得用户信息
-UsersystemApiHelper.get_user(:guid)
 
 需要将initializers目录拷贝到 config/initializers下。
 配置 usersystem_api_config.rb
 
 如果有些页面出现问题跳过同步session的filter的就可以了。
 skip_before_filter :synchronize_session
+
+Example
+=======
+# 获得用户信息
+UsersystemApiHelper.get_user(:guid)
